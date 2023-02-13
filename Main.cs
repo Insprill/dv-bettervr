@@ -14,8 +14,13 @@ namespace BetterVR
 
         public static bool Load(UnityModManager.ModEntry modEntry)
         {
+            if (!VRManager.IsVREnabled())
+            {
+                Logger.Log("Not playing in VR. Skipping setup.");
+                return true;
+            }
+
             ModEntry = modEntry;
-            ModEntry.Enabled = VRManager.IsVREnabled();
             Settings = UnityModManager.ModSettings.Load<Settings>(ModEntry);
             ModEntry.OnGUI = DrawGUI;
             ModEntry.OnSaveGUI = SaveGUI;
@@ -24,18 +29,15 @@ namespace BetterVR
 
             try
             {
-                Logger.Log("Loading BetterVR");
-
+                Logger.Log("Patching...");
                 harmony = new Harmony(ModEntry.Info.Id);
                 harmony.PatchAll();
-
                 Logger.Log("Successfully patched");
             }
             catch (Exception ex)
             {
                 Logger.LogException("Failed to load BetterVR:", ex);
                 harmony?.UnpatchAll();
-                Logger.Log("Unpatched");
                 return false;
             }
 
