@@ -1,0 +1,7 @@
+{
+    "Id": "BetterVR",
+    "Author": "Insprill",
+    "DisplayName": "Better VR",
+    "Version": "0.1.0",
+    "EntryMethod": "BetterVR.Main.Load"
+}
